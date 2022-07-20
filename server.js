@@ -26,7 +26,7 @@ app.post('/api/notes', (req, res) => {
 
 //delete notes 
 app.delete('/api/notes/:id', (req, res) => {
-    deleteNote(req.params.id, allNotes);
+    removeNote(req.params.id, allNotes);
     res.json(true);
 });
 
@@ -44,7 +44,7 @@ function createNote (body, notesArray) {
     if(!Array.isArray(notesArray))
         notesArray = [];
 
-    if (notesArray.length === null)
+    if (notesArray.length === 0)
         notesArray.push(0);
 
     //start the note count at zero 
@@ -58,6 +58,22 @@ function createNote (body, notesArray) {
         JSON.stringify(notesArray, null, 2)
     );
     return newNote;
+}
+
+//function to delete notes 
+function removeNote (id, notesArray) {
+    //for loop 
+    for (let i = 0; i < notesArray.length; i++) {
+        let note = notesArray[i];
+        //if statement 
+        if (note.id == id) {
+            notesArray.splice(i, 1);
+            fs.writeFileSync(
+                path.join(__dirname, './db/db.json'),
+                JSON.stringify(notesArray, null, 2)
+            );
+        }
+    }
 }
 
 
