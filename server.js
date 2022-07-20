@@ -50,7 +50,7 @@ function createNote (body, notesArray) {
         notesArray.push(0);
 
     //start the note count at zero 
-    body.id = notesArray[0];
+    body = notesArray[0];
     notesArray[0]++;
 
     notesArray.push(newNote);
