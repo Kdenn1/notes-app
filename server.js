@@ -4,13 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 
-app.get('/', (req, res) => {
-    
-});
-
-
-
 app.get('/notes', (req, res) => {
+console.log("lets bang this out!")
 });
 
 
