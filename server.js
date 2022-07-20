@@ -4,14 +4,13 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const path = require('path');
-
-//declare allnotes as a const 
 const allNotes = require('./db/db.json');
-
+app.use(express.json());
+app.use(express.static('public'));
 
 //link the get request to the notes html document
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './miniature-eureka-main/develop/public/notes.html'));
+    res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
 //api notes get and post requests
@@ -36,7 +35,7 @@ app.delete('/api/notes/:id', (req, res) => {
 //get all request
 app.get('*', (req, res) => {
     res.send('hi');
-    res.sendFile(path.join(__dirname, './miniature-eureka-main/develop/public/index.html'))
+    res.sendFile(path.join(__dirname, './public/index.html'))
 });
 
 //function to create new note 
@@ -50,7 +49,7 @@ function createNote (body, notesArray) {
         notesArray.push(0);
 
     //start the note count at zero 
-    body = notesArray[0];
+    body.id = notesArray[0];
     notesArray[0]++;
 
     notesArray.push(newNote);
