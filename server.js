@@ -1,7 +1,13 @@
 //declare const values and port 
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3001;
+const path = require('path');
+
+//declare allnotes as a const 
+const allNotes = require('./db/db.json');
+
 
 //link the get request to the notes html document
 app.get('/notes', (req, res) => {
@@ -15,7 +21,7 @@ app.get('/api/notes', (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-    const newNote = createNewNote(req.body, allNotes);
+    const newNote = createNote(req.body, allNotes);
     //tell the server what to do with json data returned 
     res.json(newNote);
 });
@@ -27,11 +33,33 @@ app.delete('/api/notes/:id', (req, res) => {
 });
 
 
-
+//get all request
 app.get('*', (req, res) => {
     res.send('hi');
     res.sendFile(path.join(__dirname, './miniature-eureka-main/develop/public/index.html'))
 });
+
+//function to create new note 
+function createNote (body, notesArray) {
+    const newNote = body;
+    //if statement to tell server what to do with json 
+    if(!Array.isArray(notesArray))
+        notesArray = [];
+
+    if (notesArray.length === null)
+        notesArray.push(0);
+
+    //start the note count at zero 
+    body.id = notesArray[0];
+    notesArray[0]++;
+
+    notesArray.push(newNote);
+    fs.writeFileSync(
+        path.join(__dirname, './db/db.json'),
+        JSON.stringify(notesArray, null, 2)
+    );
+    return newNote;
+}
 
 
 
