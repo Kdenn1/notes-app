@@ -15,7 +15,6 @@ app.get('/notes', (req, res) => {
 
 //api notes get and post requests
 app.get('/api/notes', (req, res) => {
-    res.send('hello there')
     res.json(allNotes.slice(1));
 });
 
@@ -51,6 +50,7 @@ function createNote (body, notesArray) {
     //start the note count at zero 
     body.id = notesArray[0];
     notesArray[0]++;
+    body.id++;
 
     notesArray.push(newNote);
     fs.writeFileSync(
